@@ -3,6 +3,7 @@
            https://api.github.com/users/<your name>
 */
 
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -24,7 +25,7 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['https://api.github.com/users/reidysj', 'https://api.github.com/users/zahidkhawaja', 'https://api.github.com/users/cybersck', 'https://api.github.com/users/biskoi', 'https://api.github.com/users/artmang'];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -45,6 +46,97 @@ const followersArray = [];
 </div>
 
 */
+
+function cardMaker(obj) {
+
+    const card = document.createElement('div');
+    const img = document.createElement('img');
+    const info = document.createElement('div');
+    const name = document.createElement('h3');
+    const userName = document.createElement('p');
+    const location = document.createElement('p');
+    const profile = document.createElement('p');
+    const link = document.createElement('p');
+    const link1 = document.createElement('a');
+    const followers = document.createElement('p');
+    const following = document.createElement('p');
+    const bio = document.createElement('p');
+
+    img.src = obj.data.avatar_url;
+    name.textContent = obj.data.name;
+    userName.textContent = obj.data.login;
+    location.textContent = `location: ${obj.data.location}`;
+    link1.textContent = obj.data.html_url;
+
+
+
+    link1.href = obj.data.html_url;
+    followers.textContent = `followers: ${obj.data.followers}`;
+    following.textContent = `following: ${obj.data.following}`;
+    bio.textContent = `bio: ${obj.data.bio}`;
+
+
+
+    card.append(img);
+    card.append(info);
+    info.append(name);
+    info.append(userName);
+    info.append(location);
+    info.append(profile);
+    profile.append(link);
+    profile.append(link1);
+    info.append(followers);
+    info.append(following);
+    info.append(bio);
+
+    card.classList.add('card');
+    info.classList.add('card-info');
+    name.classList.add('name');
+    userName.classList.add('username');
+
+
+
+    return card;
+}
+// 
+
+
+const access = document.querySelector('.cards');
+
+axios.get('https://api.github.com/users/neel7777')
+    .then(response => {
+        //console.log(response);
+
+        access.append(cardMaker(response));
+
+    })
+    .catch(error => {
+        console.log('error message')
+    })
+
+
+
+
+
+
+followersArray.forEach(person => {
+    axios.get(person)
+        .then(response => {
+            //console.log(response.data);
+
+
+            access.append(cardMaker(response));
+        })
+        .catch(error => {
+            console.log('error message')
+        })
+
+
+
+})
+
+
+
 
 /* List of LS Instructors Github username's: 
   tetondan
